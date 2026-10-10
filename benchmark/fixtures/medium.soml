@@ -1,0 +1,10 @@
+# API gateway deployment
+name: 'api-gateway'
+port: 8080
+healthy: true
+routes: ['/health', '/v1']
+limits: {retries: 3, timeout: 30s}
+cache: {enabled: false, capacity: 1_024}
+release: 2026-10-10T00:00:00Z
+ratio: 1.25
+owner: null

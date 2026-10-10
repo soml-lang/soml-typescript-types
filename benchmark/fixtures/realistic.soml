@@ -1,0 +1,40 @@
+# Production edge service configuration.
+name: 'api-gateway'
+title: "API 🚀"
+description: '''
+	The public API gateway terminates TLS, checks request credentials, and dispatches each request to an explicitly configured upstream. Health checks are handled locally so a dependency outage does not make the process appear unavailable. Requests include a trace identifier that remains stable across retries and is recorded in the application logs.
+	Operators deploy this configuration to the production edge cluster after reviewing the route changes and the release timestamp. A deployment first updates one instance, waits for its readiness probe, and then replaces the remaining instances in small batches. Connections already in flight are allowed to finish before the instance stops accepting work.
+	Rate limits apply independently to authenticated accounts and anonymous clients. The gateway reports the remaining allowance in response headers and returns an explicit retry interval when an allowance is exhausted. Internal monitoring requests use a separate allowance so alerts continue to function while customer traffic is being limited.
+	Access logs include the route name, the upstream status, the elapsed request time, and the selected deployment region. They exclude authorization headers, session cookies, and request bodies. Aggregated latency measurements are retained separately from the sampled request logs so operators can investigate a regression without storing sensitive payloads.
+	When an upstream becomes unavailable, the gateway retries only requests whose methods and route policy permit repetition. It uses the configured timeout as an overall deadline rather than restarting the timer for every attempt. A request that cannot be retried returns a clear dependency failure while the health endpoint continues to report the gateway process state.
+	'''
+message: """
+	Deployment 🚀 is ready.
+	Region: eu-west\tStatus: healthy
+	"""
+release: 2026-10-10T08:30:15.123456789+02:00
+ports: [8080, 8443]
+permissions: [0x1FF, 0o755, 0b1010]
+limits: {
+	retries: 3
+	timeout: 1m30.5s
+	backoff: 250ms
+	capacity: 1_024
+}
+tls: {
+	enabled: true
+	domains: ['api.example.com', 'edge.example.com']
+	minimum: '1.3'
+}
+routes: [
+	{id: 'health', method: 'GET', path: '/health', upstream: 'local', auth: false, timeout: 100ms}
+	{id: 'users', method: 'GET', path: '/v1/users', upstream: 'accounts', auth: true, timeout: 5s}
+	{id: 'events', method: 'POST', path: '/v1/events', upstream: 'ingestion', auth: true, timeout: 10s}
+]
+metadata: {
+	'build.number': 42
+	deployment: 'production'
+	maintainer: "André"
+}
+ratio: 0.75
+owner: null

@@ -1,0 +1,38 @@
+{
+	"name": "soml-typescript-types",
+	"version": "0.0.0",
+	"description": "SOML parser, encoder, and canonicalizer written entirely in TypeScript types",
+	"license": "MIT",
+	"repository": "soml-lang/soml-typescript-types",
+	"funding": "https://github.com/sponsors/sindresorhus",
+	"author": "Sindre Sorhus <sindresorhus@gmail.com> (https://sindresorhus.com)",
+	"type": "module",
+	"exports": {
+		"types": "./index.d.ts"
+	},
+	"sideEffects": false,
+	"engines": {
+		"node": ">=22"
+	},
+	"scripts": {
+		"test": "tsc && node --test scripts/conformance.test.js",
+		"test:conformance": "node scripts/conformance.js",
+		"test:stress": "node scripts/stress.js",
+		"bench": "node benchmark/index.js"
+	},
+	"files": [
+		"index.d.ts"
+	],
+	"keywords": [
+		"soml",
+		"typescript",
+		"types",
+		"parser",
+		"encoder",
+		"config",
+		"configuration"
+	],
+	"devDependencies": {
+		"typescript": "^7.0.2"
+	}
+}
