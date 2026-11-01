@@ -1,6 +1,6 @@
 {
 	"name": "soml-typescript-types",
-	"version": "0.0.0",
+	"version": "0.0.1",
 	"description": "SOML parser, encoder, and canonicalizer written entirely in TypeScript types",
 	"license": "MIT",
 	"repository": "soml-lang/soml-typescript-types",
